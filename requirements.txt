@@ -1,8 +1,6 @@
 langchain
 pydantic
-pymupdf
 python-doctr
-ipython
 matplotlib
 mplcursors
 Pillow
@@ -14,5 +12,4 @@ pandas
 oracledb
 crewai
 crewai-tools
-ipykernel
 scikit-learn
