@@ -4,7 +4,7 @@ from datetime import datetime
 from utils.logger import setup_logger
 from oracle_connector.fetch_oracle_base import DataFetcherOracleBase
 
-logger = setup_logger("fetch_oracle_po_grn")
+logger = setup_logger("invoice_processing")
 
 class DataFetcherOraclePOGRN(DataFetcherOracleBase):
     """

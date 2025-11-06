@@ -6,7 +6,7 @@ from pathlib import Path
 lib_path = r"E:\oracle\instantclient_23_9"
 oracledb.init_oracle_client(lib_dir=str(lib_path))
 
-logger=setup_logger("fetch_oracle_customer")
+logger=setup_logger("invoice_processing")
 
 
 class DataFetcherOracleBase:
