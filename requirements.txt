@@ -13,3 +13,4 @@ oracledb
 crewai
 crewai-tools
 scikit-learn
+streamlit

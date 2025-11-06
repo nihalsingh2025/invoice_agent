@@ -9,6 +9,8 @@ from langchain_openai import ChatOpenAI
 from config.settings import settings
 
 from models.mapping import MappingReport
+import streamlit as st
+
 api_key = settings.OPENAI_API_KEY
 logger = setup_logging()
 
@@ -71,11 +73,11 @@ The given data is:
 """
 
         generated_report = llm_with_schema.invoke(report_prompt)
-        logger.info(f"Successfully generated report for invoice: {generated_report.invoice_number}")
-        logger.info(f"Total items: {generated_report.summary.total_invoice_items}, "
-                    f"Mapped: {generated_report.summary.total_mapped_items}, "
-                    f"Unmapped: {generated_report.summary.total_unmapped_items}")
 
+        st.subheader("🧾 Generated Reconciliation Report")
+        st.json(json.loads(generated_report.model_dump_json(indent=2)))
+
+        logger.info(f"Successfully generated report for invoice: {generated_report.invoice_number}")
         return generated_report.model_dump_json(indent=2)
 
     except Exception as e:

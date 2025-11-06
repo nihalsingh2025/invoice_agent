@@ -1,6 +1,9 @@
 import sys
 import os
 from datetime import datetime
+import tempfile
+import json
+import streamlit as st
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -84,6 +87,7 @@ invoice_processing_task = Task(
 
     **Step 7: Storage**
     - Store the complete report using 'Store Report in Database' tool
+    - Store the report in the given db_path
     - Save both summary and line-item details
 
     Execute each step in sequence, passing data from one step to the next.
@@ -95,11 +99,7 @@ invoice_processing_task = Task(
     2. Structured invoice data with all fields
     3. Fetched PO and GRN data from database
     4. Filtered PO data matching release number and item descriptions
-    5. Complete reconciliation report with:
-       - Invoice number, PO number, GRN number, vendor name
-       - Line-by-line item mapping (MAPPED/UNMAPPED status)
-       - Remarks explaining match quality
-       - Summary with total items, mapped count, unmapped count
+    5. Complete reconciliation report 
     6. Confirmation of database storage
 
     All intermediate results saved to output files with timestamps.""",
@@ -118,37 +118,36 @@ invoice_crew = Crew(
     agents=[invoice_agent],
     tasks=[invoice_processing_task],
     process=Process.sequential,
-    verbose=True
+    verbose=True,
 )
 
 logger.info("Crew created successfully")
 
-# ==================== Main Execution ====================
+# ==================== Streamlit App ====================
 
-if __name__ == "__main__":
-    try:
-        logger.info("Starting Invoice Processing Pipeline with CrewAI")
+st.set_page_config(page_title="Invoice Processing App", page_icon="🧾", layout="centered")
 
-        os.makedirs("outputs", exist_ok=True)
-        os.makedirs("reports", exist_ok=True)
+st.title("🧾 Intelligent Invoice Processing System")
+st.write("Upload an invoice PDF to generate the report")
 
-        pdf_path = "invoice_data/kobian.pdf"
-        db_path = "reports/invoice_reports.db"
+uploaded_file = st.file_uploader("📄 Upload Invoice PDF", type=["pdf"])
 
-        if not os.path.exists(pdf_path):
-            logger.error(f"PDF file not found: {pdf_path}")
-            sys.exit(1)
+if uploaded_file is not None:
+    os.makedirs("outputs", exist_ok=True)
+    os.makedirs("reports", exist_ok=True)
 
-        logger.info(f"Processing invoice: {pdf_path}")
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
+        temp_pdf.write(uploaded_file.read())
+        pdf_path = temp_pdf.name
 
-        logger.info("Starting execution...")
-        result = invoice_crew.kickoff(inputs={"pdf_path": pdf_path,
-                                              "db_path": db_path})
+    st.info("✅ File uploaded successfully. Starting invoice processing...")
 
+    with st.spinner("Running CrewAI pipeline... This may take a few minutes ⏳"):
+        try:
+            result = invoice_crew.kickoff(inputs={"pdf_path": pdf_path, "db_path": "reports/invoice_reports.db"})
+            st.success("🎉 Data Saved Successfully to Database!")
+        except Exception as e:
+            st.error(f"❌ Pipeline failed: {e}")
 
-        logger.info("Invoice Processing Completed Successfully!")
-        logger.info(f"Final Result:\n{result}")
-
-    except Exception as e:
-        logger.error(f"Pipeline execution failed: {str(e)}", exc_info=True)
-        sys.exit(1)
+else:
+    st.warning("Please upload a PDF invoice to begin processing.")
