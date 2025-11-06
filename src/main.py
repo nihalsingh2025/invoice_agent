@@ -134,6 +134,7 @@ if __name__ == "__main__":
         os.makedirs("reports", exist_ok=True)
 
         pdf_path = "invoice_data/kobian.pdf"
+        db_path = "reports/invoice_reports.db"
 
         if not os.path.exists(pdf_path):
             logger.error(f"PDF file not found: {pdf_path}")
@@ -142,7 +143,8 @@ if __name__ == "__main__":
         logger.info(f"Processing invoice: {pdf_path}")
 
         logger.info("Starting execution...")
-        result = invoice_crew.kickoff(inputs={"pdf_path": pdf_path})
+        result = invoice_crew.kickoff(inputs={"pdf_path": pdf_path,
+                                              "db_path": db_path})
 
 
         logger.info("Invoice Processing Completed Successfully!")
