@@ -1,11 +1,11 @@
 langchain
 pydantic
+opencv-python-headless
 python-doctr
 matplotlib
 mplcursors
 Pillow
 pdf2image
-opencv-python-headless
 langchain-openai
 langchain-community
 pandas
