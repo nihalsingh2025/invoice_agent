@@ -1,13 +1,12 @@
 import pandas as pd
 import oracledb
-from utils.logger import setup_logger
+from config.logger import setup_logging
 from pathlib import Path
 
 lib_path = r"E:\oracle\instantclient_23_9"
 oracledb.init_oracle_client(lib_dir=str(lib_path))
 
-logger=setup_logger("invoice_processing")
-
+logger=setup_logging()
 
 class DataFetcherOracleBase:
     

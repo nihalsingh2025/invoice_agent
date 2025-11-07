@@ -1,10 +1,10 @@
 import pandas as pd
 import json
 from datetime import datetime
-from utils.logger import setup_logger
+from config.logger import setup_logging
 from oracle_connector.fetch_oracle_base import DataFetcherOracleBase
 
-logger = setup_logger("invoice_processing")
+logger = setup_logging()
 
 class DataFetcherOraclePOGRN(DataFetcherOracleBase):
     """
