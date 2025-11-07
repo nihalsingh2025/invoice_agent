@@ -6,6 +6,7 @@ mplcursors
 Pillow
 pdf2image
 opencv-python
+opencv-python-headless
 langchain-openai
 langchain-community
 pandas
