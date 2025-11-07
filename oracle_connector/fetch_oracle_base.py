@@ -3,8 +3,8 @@ import oracledb
 from config.logger import setup_logging
 from pathlib import Path
 
-lib_path = r"E:\oracle\instantclient_23_9"
-oracledb.init_oracle_client(lib_dir=str(lib_path))
+# lib_path = r"E:\oracle\instantclient_23_9" ##for local server
+# oracledb.init_oracle_client(lib_dir=str(lib_path))
 
 logger=setup_logging()
 
