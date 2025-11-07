@@ -5,8 +5,6 @@ import tempfile
 import json
 import streamlit as st
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
 from crewai import Agent, Task, Crew, Process
 from config.logger import setup_logging
 from agent_tools.ocr_text_extraction import extract_text_with_ocr,structure_info_with_llm
