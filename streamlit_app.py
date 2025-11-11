@@ -68,11 +68,13 @@ invoice_processing_task = Task(
     - Use 'Fetch PO and GRN Details' tool to get database records
 
     **Step 4: Release Filtering**
+     -Extract release number from structured data
     - Filter PO data by release number from invoice
     - Use 'Filter PO Data on Release' tool
 
     **Step 5: Semantic Filtering**
     - Extract invoice item descriptions from structured data
+    - Apply this step on the PO data returned from Step 4 ('Filter PO Data on Release')
     - Use 'Filter by Description Similarity' tool to match with PO items
     - This reduces the PO dataset to most relevant items
 

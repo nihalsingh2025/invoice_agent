@@ -51,7 +51,7 @@ def fetch_po_grn_details(po_number: int) -> str:
 
 
 @tool("Filter PO Data on Release")
-def filter_po_data_on_release(data_dict: dict, release_num: str) -> pd.DataFrame:
+def filter_po_data_on_release(data_dict: dict, release_num: str) -> str:
     """
     Filter PO data based on release number.
 
@@ -77,11 +77,11 @@ def filter_po_data_on_release(data_dict: dict, release_num: str) -> pd.DataFrame
         release_col = po_df["RELEASE_NUM"].dropna().unique().tolist()
         if len(release_col) == 0:
             logger.warning("No release number found in PO data")
-            return po_df
+            return po_df.to_json(orient="records")
         else:
             po_df = po_df[po_df["RELEASE_NUM"].astype(str) == str(release_num)]
             logger.info(f"After filtering: {po_df.shape[0]} rows remaining")
-            return po_df
+            return po_df.to_json(orient="records")
 
     except Exception as e:
         logger.error(f"Failed to filter PO data: {str(e)}", exc_info=True)
